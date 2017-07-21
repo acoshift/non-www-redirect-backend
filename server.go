@@ -11,11 +11,12 @@ import (
 	"github.com/acoshift/middleware"
 )
 
-var port = flag.Int("port", 8080, "Port to server non www redirect backend")
+var port = flag.Int("port", 8080, "Port to serve non www redirect backend")
 
 func main() {
 	flag.Parse()
 	http.Handle("/", nonWWWRedirect()(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusNotFound)
 		fmt.Fprint(w, "non www redirect backend - 404")
 	})))
 	http.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
