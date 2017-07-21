@@ -1,5 +1,5 @@
 IMAGE=acoshift/non-www-redirect-backend
-TAG=1.1
+TAG=1.2
 GOLANG_VERSION=1.8
 REPO=github.com/acoshift/non-www-redirect-backend
 

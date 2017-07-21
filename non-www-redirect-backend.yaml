@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: non-www-redirect-backend
-        image: acoshift/non-www-redirect-backend:1.0
+        image: acoshift/non-www-redirect-backend:1.2
         livenessProbe:
           httpGet:
             path: /healthz
