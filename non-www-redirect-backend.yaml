@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
   name: non-www-redirect-backend
@@ -11,7 +11,6 @@ spec:
       labels:
         app: non-www-redirect-backend
     spec:
-      terminationGracePeriodSeconds: 60
       containers:
       - name: non-www-redirect-backend
         image: acoshift/non-www-redirect-backend:1.0
@@ -39,11 +38,8 @@ metadata:
   labels:
     app: non-www-redirect-backend
 spec:
-  type: NodePort
   ports:
   - port: 8080
     targetPort: 8080
-    protocol: TCP
-    name: http
   selector:
     app: non-www-redirect-backend
