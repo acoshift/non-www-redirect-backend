@@ -12,7 +12,7 @@ build:
 	docker run --rm -it -v $(PWD):/go/src/$(REPO) -w /go/src/$(REPO) golang:$(GOLANG_VERSION) /bin/bash -c "make server"
 	docker build --pull -t $(IMAGE):$(TAG) .
 
-push: build
+push: clean build
 	docker push $(IMAGE):$(TAG)
 
 clean:
