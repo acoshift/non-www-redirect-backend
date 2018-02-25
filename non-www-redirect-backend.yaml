@@ -6,6 +6,10 @@ metadata:
     app: non-www-redirect-backend
 spec:
   replicas: 2
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: non-www-redirect-backend
   template:
     metadata:
       labels:
