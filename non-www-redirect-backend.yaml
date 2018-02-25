@@ -1,16 +1,26 @@
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: non-www-redirect-backend
   labels:
     app: non-www-redirect-backend
 spec:
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:
         app: non-www-redirect-backend
     spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - non-www-redirect-backend
+            topologyKey: kubernetes.io/hostname
       containers:
       - name: non-www-redirect-backend
         image: acoshift/non-www-redirect-backend:1.2
@@ -19,17 +29,27 @@ spec:
             path: /healthz
             port: 8080
             scheme: HTTP
-          initialDelaySeconds: 30
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          failureThreshold: 3
           timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 3
+          periodSeconds: 5
+          successThreshold: 1
+          failureThreshold: 2
+          timeoutSeconds: 2
         ports:
         - containerPort: 8080
         resources:
-          limits:
-            cpu: 10m
-            memory: 20Mi
           requests:
             cpu: 10m
-            memory: 20Mi
+            memory: 10Mi
 ---
 apiVersion: v1
 kind: Service
@@ -38,8 +58,9 @@ metadata:
   labels:
     app: non-www-redirect-backend
 spec:
-  ports:
-  - port: 8080
-    targetPort: 8080
   selector:
     app: non-www-redirect-backend
+  ports:
+  - name: http
+    port: 8080
+
