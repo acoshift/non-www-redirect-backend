@@ -1,6 +1,6 @@
 IMAGE=acoshift/non-www-redirect-backend
-TAG=1.5
-GOLANG_VERSION=1.10.1
+TAG=1.6
+GOLANG_VERSION=1.10.2
 REPO=github.com/acoshift/non-www-redirect-backend
 
 server: server.go
